@@ -6,6 +6,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +16,16 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 	
-    private String SECRET_KEY = "secret";
+    private String SECRET_KEY = "generateSafeTokengenerateSafeTokengenerateSafeTokengenerateSafeToken";
+    
+    private String generateSafeToken() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[36]; // 36 bytes * 8 = 288 bits, a little bit more than
+                                     // the 256 required bits 
+        random.nextBytes(bytes);
+        var encoder = Base64.getUrlEncoder().withoutPadding();
+        return encoder.encodeToString(bytes);
+  }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
